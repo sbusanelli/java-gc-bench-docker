@@ -1,0 +1,9 @@
+# ZGC Dockerfile - Optimized for pre-built JAR
+FROM eclipse-temurin:21-jdk
+WORKDIR /app
+# Copy pre-built JAR directly 
+COPY target/gc-bench-1.0-jar-with-dependencies.jar /app/app.jar
+# Logs go to /logs (bind-mounted by docker-compose)
+VOLUME ["/logs"]
+ENV HEAP="" WORK=""
+CMD bash -lc 'java $HEAP -XX:+UseZGC -Xlog:gc*,safepoint:file=/logs/gc-zgc.log:time,uptime,level,tags $WORK -jar /app/app.jar'

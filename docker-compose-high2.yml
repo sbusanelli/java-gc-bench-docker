@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  # HIGH MEMORY PRESSURE SCENARIO 2: Extreme churn with massive batches
+  zgc-high2:
+    build:
+      context: .
+      dockerfile: docker/zgc/Dockerfile.optimized
+    environment:
+      HEAP: "-Xms4g -Xmx4g -XX:+AlwaysPreTouch"
+      WORK: "-Dalloc.bytes=65536 -Dchurn.batch=8000 -Dleak.every=150 -Drun.seconds=180 -Dreport.ms=2000"
+    volumes:
+      - ./logs:/logs
+    container_name: gcbench-zgc-high2
+
+  shenandoah-high2:
+    build:
+      context: .
+      dockerfile: docker/shenandoah/Dockerfile.optimized
+    environment:
+      HEAP: "-Xms4g -Xmx4g -XX:+AlwaysPreTouch"
+      WORK: "-Dalloc.bytes=65536 -Dchurn.batch=8000 -Dleak.every=150 -Drun.seconds=180 -Dreport.ms=2000"
+    volumes:
+      - ./logs:/logs
+    container_name: gcbench-shenandoah-high2

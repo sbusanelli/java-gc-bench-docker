@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  # HIGH MEMORY PRESSURE SCENARIO 3: Memory-constrained with aggressive leaking
+  zgc-high3:
+    build:
+      context: .
+      dockerfile: docker/zgc/Dockerfile.optimized
+    environment:
+      HEAP: "-Xms2g -Xmx2g -XX:+AlwaysPreTouch"
+      WORK: "-Dalloc.bytes=262144 -Dchurn.batch=3000 -Dleak.every=50 -Drun.seconds=200 -Dreport.ms=2000"
+    volumes:
+      - ./logs:/logs
+    container_name: gcbench-zgc-high3
+
+  shenandoah-high3:
+    build:
+      context: .
+      dockerfile: docker/shenandoah/Dockerfile.optimized
+    environment:
+      HEAP: "-Xms2g -Xmx2g -XX:+AlwaysPreTouch"
+      WORK: "-Dalloc.bytes=262144 -Dchurn.batch=3000 -Dleak.every=50 -Drun.seconds=200 -Dreport.ms=2000"
+    volumes:
+      - ./logs:/logs
+    container_name: gcbench-shenandoah-high3

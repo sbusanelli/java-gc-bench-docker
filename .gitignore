@@ -1,0 +1,7 @@
+logs/
+reports/
+target/
+*.md
+.idea/
+.vscode/
+*.iml

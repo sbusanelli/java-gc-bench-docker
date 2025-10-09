@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  # HIGH MEMORY PRESSURE SCENARIO 1: Large allocations with frequent leaks
+  zgc-high1:
+    build:
+      context: .
+      dockerfile: docker/zgc/Dockerfile.optimized
+    environment:
+      HEAP: "-Xms3g -Xmx3g -XX:+AlwaysPreTouch"
+      WORK: "-Dalloc.bytes=131072 -Dchurn.batch=4000 -Dleak.every=100 -Drun.seconds=180 -Dreport.ms=2000"
+    volumes:
+      - ./logs:/logs
+    container_name: gcbench-zgc-high1
+
+  shenandoah-high1:
+    build:
+      context: .
+      dockerfile: docker/shenandoah/Dockerfile.optimized
+    environment:
+      HEAP: "-Xms3g -Xmx3g -XX:+AlwaysPreTouch"
+      WORK: "-Dalloc.bytes=131072 -Dchurn.batch=4000 -Dleak.every=100 -Drun.seconds=180 -Dreport.ms=2000"
+    volumes:
+      - ./logs:/logs
+    container_name: gcbench-shenandoah-high1

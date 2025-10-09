@@ -1,0 +1,8 @@
+# Shenandoah Dockerfile - Optimized for pre-built JAR
+FROM registry.access.redhat.com/ubi9/openjdk-21-runtime
+WORKDIR /app
+# Copy pre-built JAR directly
+COPY target/gc-bench-1.0-jar-with-dependencies.jar /app/app.jar
+VOLUME ["/logs"]
+ENV HEAP="" WORK=""
+CMD bash -lc 'java $HEAP -XX:+UseShenandoahGC -Xlog:gc*,safepoint:file=/logs/gc-shenandoah.log:time,uptime,level,tags $WORK -jar /app/app.jar'

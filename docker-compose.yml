@@ -1,0 +1,39 @@
+version: "3.9"
+
+services:
+  # ZGC on Temurin 21
+  zgc:
+    build:
+      context: .
+      dockerfile: docker/zgc/Dockerfile.optimized
+    environment:
+      HEAP: "-Xms2g -Xmx2g -XX:+AlwaysPreTouch"
+      WORK: "-Dalloc.bytes=32768 -Dchurn.batch=2000 -Dleak.every=300 -Drun.seconds=120 -Dreport.ms=2000"
+    volumes:
+      - ./logs:/logs
+    container_name: gcbench-zgc
+
+  # Shenandoah on Red Hat OpenJDK 21 runtime
+  shenandoah:
+    build:
+      context: .
+      dockerfile: docker/shenandoah/Dockerfile.optimized
+    environment:
+      HEAP: "-Xms2g -Xmx2g -XX:+AlwaysPreTouch"
+      WORK: "-Dalloc.bytes=32768 -Dchurn.batch=2000 -Dleak.every=300 -Drun.seconds=120 -Dreport.ms=2000"
+    volumes:
+      - ./logs:/logs
+    container_name: gcbench-shenandoah
+
+  # Optional: Azul Prime (C4) — requires licensed image.
+  # Uncomment and set correct image reference according to your license/access.
+  # zing:
+  #   build:
+  #     context: .
+  #     dockerfile: docker/zing/Dockerfile
+  #   environment:
+  #     HEAP: "-Xms8g -Xmx8g -XX:+AlwaysPreTouch"
+  #     WORK: "-Dalloc.bytes=65536 -Dchurn.batch=4000 -Dleak.every=200 -Drun.seconds=180 -Dreport.ms=2000"
+  #   volumes:
+  #     - ./logs:/logs
+  #   container_name: gcbench-zing
