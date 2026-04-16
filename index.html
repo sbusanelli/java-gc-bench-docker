@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java GC Benchmark Docker - Performance Analysis & Optimization</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="A comprehensive Docker-based benchmarking suite for Java Garbage Collection performance analysis and optimization. Test G1, ZGC, Shenandoah, Parallel, and CMS garbage collectors.">
+    <meta name="keywords" content="Java, Garbage Collection, GC, Performance, Benchmark, Docker, JVM, Memory Management, Performance Tuning, G1GC, ZGC, Shenandoah, Parallel GC, CMS GC, Java Performance, Memory Optimization">
+    <meta name="author" content="sbusanelli">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Java GC Benchmark Docker - Performance Analysis & Optimization">
+    <meta property="og:description" content="A comprehensive Docker-based benchmarking suite for Java Garbage Collection performance analysis and optimization">
+    <meta property="og:url" content="https://sbusanelli.github.io/java-gc-bench-docker">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://sbusanelli.github.io/java-gc-bench-docker/assets/images/og-image.png">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Java GC Benchmark Docker - Performance Analysis & Optimization">
+    <meta name="twitter:description" content="A comprehensive Docker-based benchmarking suite for Java Garbage Collection performance analysis and optimization">
+    <meta name="twitter:image" content="https://sbusanelli.github.io/java-gc-bench-docker/assets/images/twitter-card.png">
+    <meta name="twitter:creator" content="@sbusanelli">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://sbusanelli.github.io/java-gc-bench-docker">
+    
+    <!-- Styles -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: #ff6b6b;
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 25px;
+            margin-top: 2rem;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        
+        .features {
+            padding: 4rem 0;
+            background: white;
+        }
+        
+        .features h2 {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2rem;
+            color: #333;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .feature-card {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        
+        .feature-card h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        
+        .feature-card p {
+            color: #666;
+            line-height: 1.7;
+        }
+        
+        .gc-types {
+            background: #f8f9fa;
+            padding: 4rem 0;
+        }
+        
+        .gc-types h2 {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2rem;
+            color: #333;
+        }
+        
+        .gc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .gc-item {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: transform 0.2s;
+        }
+        
+        .gc-item:hover {
+            transform: translateY(-3px);
+        }
+        
+        .gc-item h4 {
+            color: #764ba2;
+            margin-bottom: 0.5rem;
+        }
+        
+        .quick-start {
+            background: white;
+            padding: 4rem 0;
+        }
+        
+        .quick-start h2 {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2rem;
+            color: #333;
+        }
+        
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+        
+        .use-cases {
+            background: #f8f9fa;
+            padding: 4rem 0;
+        }
+        
+        .use-cases h2 {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2rem;
+            color: #333;
+        }
+        
+        .use-case-list {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .use-case-item {
+            background: white;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid #ff6b6b;
+        }
+        
+        footer {
+            background: #2d3748;
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+        
+        .footer-links {
+            margin-bottom: 1rem;
+        }
+        
+        .footer-links a {
+            color: #667eea;
+            text-decoration: none;
+            margin: 0 1rem;
+            transition: color 0.2s;
+        }
+        
+        .footer-links a:hover {
+            color: #764ba2;
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            header p {
+                font-size: 1rem;
+            }
+            
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .gc-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Java GC Benchmark Docker</h1>
+            <p>A comprehensive Docker-based benchmarking suite for Java Garbage Collection performance analysis and optimization</p>
+            <a href="https://github.com/sbusanelli/java-gc-bench-docker" class="cta-button">Get Started on GitHub</a>
+        </div>
+    </header>
+    
+    <section class="features">
+        <div class="container">
+            <h2>Why Choose Java GC Benchmark Docker?</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>Multiple GC Algorithms</h3>
+                    <p>Test and compare G1, ZGC, Shenandoah, Parallel, and CMS garbage collectors in standardized environments</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Docker Containerization</h3>
+                    <p>Consistent, reproducible testing environment across different platforms and operating systems</p>
+                </div>
+                <div class="feature-card">
+                    <h3>High-Memory Benchmarks</h3>
+                    <p>Specialized benchmarks for high-memory scenarios with 16GB, 32GB, and 64GB heap configurations</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Detailed Performance Metrics</h3>
+                    <p>Comprehensive reports on pause times, throughput, memory usage, and GC efficiency</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Easy Configuration</h3>
+                    <p>Docker Compose files for different memory scenarios and simple shell scripts for execution</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Analysis Tools</h3>
+                    <p>Python scripts for quick analysis and performance comparison across different configurations</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="gc-types">
+        <div class="container">
+            <h2>Supported Garbage Collectors</h2>
+            <div class="gc-grid">
+                <div class="gc-item">
+                    <h4>G1 GC</h4>
+                    <p>Garbage-First<br>Default in modern Java</p>
+                </div>
+                <div class="gc-item">
+                    <h4>ZGC</h4>
+                    <p>Z Garbage Collector<br>Low-latency for large heaps</p>
+                </div>
+                <div class="gc-item">
+                    <h4>Shenandoah</h4>
+                    <p>Concurrent compacting<br>GC with low pause times</p>
+                </div>
+                <div class="gc-item">
+                    <h4>Parallel GC</h4>
+                    <p>Throughput-oriented<br>High-performance collector</p>
+                </div>
+                <div class="gc-item">
+                    <h4>CMS GC</h4>
+                    <p>Concurrent Mark Sweep<br>Legacy low-pause collector</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="quick-start">
+        <div class="container">
+            <h2>Quick Start Guide</h2>
+            <div class="code-block">
+                # Clone the repository
+                git clone https://github.com/sbusanelli/java-gc-bench-docker.git
+                cd java-gc-bench-docker
+                
+                # Run standard benchmark
+                docker-compose up
+                
+                # Run high-memory benchmark (16GB)
+                docker-compose -f docker-compose-high1.yml up
+                
+                # Run high-memory benchmark (32GB)
+                docker-compose -f docker-compose-high2.yml up
+                
+                # Run high-memory benchmark (64GB)
+                docker-compose -f docker-compose-high3.yml up
+            </div>
+        </div>
+    </section>
+    
+    <section class="use-cases">
+        <div class="container">
+            <h2>Perfect For</h2>
+            <div class="use-case-list">
+                <div class="use-case-item">
+                    <h3>High-Memory Application Testing</h3>
+                    <p>Test GC performance with large heap sizes (16GB, 32GB, 64GB) for memory-intensive applications</p>
+                </div>
+                <div class="use-case-item">
+                    <h3>GC Algorithm Comparison</h3>
+                    <p>Compare performance characteristics of different garbage collectors under identical conditions</p>
+                </div>
+                <div class="use-case-item">
+                    <h3>Performance Tuning</h3>
+                    <p>Find optimal GC settings and heap configurations for your specific application requirements</p>
+                </div>
+                <div class="use-case-item">
+                    <h3>Capacity Planning</h3>
+                    <p>Determine memory requirements and performance characteristics for different workload scenarios</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="https://github.com/sbusanelli/java-gc-bench-docker">GitHub</a>
+                <a href="https://github.com/sbusanelli/java-gc-bench-docker/issues">Issues</a>
+                <a href="https://github.com/sbusanelli/java-gc-bench-docker/blob/main/CONTRIBUTING.md">Contributing</a>
+                <a href="https://github.com/sbusanelli/java-gc-bench-docker/blob/main/LICENSE">License</a>
+            </div>
+            <p>&copy; 2024 Java GC Benchmark Docker. Created by <a href="https://github.com/sbusanelli" style="color: #667eea;">sbusanelli</a></p>
+        </div>
+    </footer>
+    
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Java GC Benchmark Docker",
+        "description": "A comprehensive Docker-based benchmarking suite for Java Garbage Collection performance analysis and optimization with high-memory testing capabilities",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Linux, macOS, Windows",
+        "programmingLanguage": "Java, Docker, Python",
+        "author": {
+            "@type": "Person",
+            "name": "sbusanelli",
+            "url": "https://github.com/sbusanelli"
+        },
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "keywords": "Java, Garbage Collection, GC, Performance, Benchmark, Docker, JVM, Memory Management, Performance Tuning, G1GC, ZGC, Shenandoah, Parallel GC, CMS GC, High Memory, Large Heap",
+        "url": "https://sbusanelli.github.io/java-gc-bench-docker",
+        "sameAs": "https://github.com/sbusanelli/java-gc-bench-docker"
+    }
+    </script>
+</body>
+</html>

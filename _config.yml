@@ -1,0 +1,65 @@
+# Site settings
+title: "Java GC Benchmark Docker"
+description: "A comprehensive Docker-based benchmarking suite for Java Garbage Collection performance analysis and optimization"
+url: "https://sbusanelli.github.io/java-gc-bench-docker"
+baseurl: "/java-gc-bench-docker"
+
+# SEO and metadata
+author: "sbusanelli"
+keywords: "Java, Garbage Collection, GC, Performance, Benchmark, Docker, JVM, Memory Management, Performance Tuning, G1GC, ZGC, Shenandoah, Parallel GC, CMS GC, Java Performance, Memory Optimization"
+lang: "en"
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+theme: minima
+plugins:
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+# Collections
+collections:
+  benchmarks:
+    output: true
+    permalink: /:collection/:name/
+
+# Exclude from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - src/
+  - docker/
+  - scripts/
+  - target/
+  - pom.xml
+  - docker-compose*.yml
+  - *.sh
+  - *.py
+  - *.ps1
+
+# Include files
+include:
+  - _pages
+
+# SEO settings
+twitter:
+  username: sbusanelli
+  card: summary
+
+social:
+  name: sbusanelli
+  links:
+    - https://github.com/sbusanelli
+
+# Google Analytics (add your tracking ID)
+google_analytics: # UA-XXXXXXXXX-X
+
+# Repository settings (for GitHub SEO)
+github:
+  repository_url: https://github.com/sbusanelli/java-gc-bench-docker
+  is_project_page: true

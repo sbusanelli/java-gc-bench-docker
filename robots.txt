@@ -1,0 +1,29 @@
+User-agent: *
+Allow: /
+
+# Allow search engines to crawl all important files
+Allow: /index.html
+Allow: /README.md
+Allow: /_config.yml
+Allow: /sitemap.xml
+
+# Block crawling of unnecessary files and directories
+Disallow: /.git/
+Disallow: /src/
+Disallow: /docker/
+Disallow: /scripts/
+Disallow: /target/
+Disallow: /node_modules/
+Disallow: /vendor/
+Disallow: /.vscode/
+Disallow: /pom.xml
+Disallow: /docker-compose*.yml
+Disallow: /*.sh
+Disallow: /*.py
+Disallow: /*.ps1
+
+# Sitemap location
+Sitemap: https://sbusanelli.github.io/java-gc-bench-docker/sitemap.xml
+
+# Crawl delay (optional, adjust based on server capacity)
+Crawl-delay: 1
