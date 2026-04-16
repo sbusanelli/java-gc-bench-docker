@@ -17,12 +17,6 @@ plugins:
   - jekyll-sitemap
   - jekyll-seo-tag
 
-# Collections
-collections:
-  benchmarks:
-    output: true
-    permalink: /:collection/:name/
-
 # Exclude from processing
 exclude:
   - Gemfile
@@ -41,10 +35,6 @@ exclude:
   - *.sh
   - *.py
   - *.ps1
-
-# Include files
-include:
-  - _pages
 
 # SEO settings
 twitter:
