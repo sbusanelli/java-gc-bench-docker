@@ -1,7 +1,7 @@
 # Site settings
 title: "Java GC Benchmark Docker"
 description: "A comprehensive Docker-based benchmarking suite for Java Garbage Collection performance analysis and optimization"
-url: "https://sbusanelli.github.io/java-gc-bench-docker"
+url: "https://sbusanelli.github.io"
 baseurl: "/java-gc-bench-docker"
 
 # SEO and metadata
